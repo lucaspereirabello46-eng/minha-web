@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thays Nascimento Saúde Integrativa</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+:root{
+  --vermelho:#c4161c;
+  --preto:#111;
+  --cinza:#666;
+  --fundo:#ffffff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:Poppins,sans-serif;
+  background:var(--fundo);
+  color:var(--preto);
+}
+
+/* ===== FAIXA LOGO ===== */
+.faixa-logo{
+  width:100%;
+  height:300px;
+  background:#ffffff;;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  flex-direction:column;
+}
+
+.tracejado{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:80%;
+  height:6px;
+  background:var(--vermelho);
+  transform:translate(-50%,-50%);
+  z-index:1;
+}
+
+.logo{
+  max-height:270px;
+  z-index:2;
+}
+
+/* ===== MENU ===== */
+nav{
+  background:white;
+  padding:10px 20px;
+  box-shadow:0 4px 14px rgba(0,0,0,.15);
+  position:relative;
+  z-index:10;
+}
+
+.menu{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+}
+
+.menu a{
+  text-decoration:none;
+  color:var(--preto);
+  font-weight:500;
+  position:relative;
+  transition:.3s;
+}
+
+.menu a::after{
+  content:"";
+  position:absolute;
+  bottom:-4px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--vermelho);
+  transition:.3s;
+}
+
+.menu a:hover::after{
+  width:100%;
+}
+
+.menu-toggle{
+  display:none;
+  position:absolute;
+  right:20px;
+  top:12px;
+  cursor:pointer;
+  flex-direction:column;
+  gap:5px;
+  z-index:20;
+}
+
+.menu-toggle span{
+  width:28px;
+  height:3px;
+  background:var(--preto);
+  border-radius:2px;
+  transition:.3s;
+}
+
+/* MENU MOBILE FUNCIONAR */
+.menu.active{
+  display:flex !important;
+}
+
+/* ===== SEÇÕES ===== */
+section{
+  max-width:1100px;
+  margin:auto;
+  padding:70px 20px;
+}
+
+h2{
+  text-align:center;
+  color:var(--vermelho);
+  margin-bottom:50px;
+  font-size:30px;
+}
+
+/* ===== CARDS ===== */
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+
+.card{
+  background:#ffffff;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 15px 35px rgba(0,0,0,.18);
+  display:flex;
+  flex-direction:column;
+  min-height:100%;
+  opacity:0;
+  transform:translateY(30px) scale(0.95);
+  transition:.6s ease;
+}
+
+.card.show{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 30px 60px rgba(0,0,0,.25);
+}
+
+.card img{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+}
+
+/* cards mesma altura */
+.card-content{
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  height:100%;
+}
+
+.card-content h3{
+  margin-bottom:6px;
+  color:var(--vermelho);
+}
+
+.card-content p{
+  font-size:13px;
+  color:var(--cinza);
+  line-height:1.5;
+  margin-bottom:8px;
+}
+
+/* ===== BOTÃO SAIBA MAIS ===== */
+.saiba-mais{
+  background:linear-gradient(135deg,var(--vermelho),#d61c34);
+  color:white;
+  border:none;
+  padding:8px 14px;
+  border-radius:22px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin-top:auto;
+  transition:.25s;
+}
+
+.saiba-mais:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 25px rgba(0,0,0,.3);
+}
+
+/* DETALHES (SAIBA MAIS) */
+.detalhes{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  transition:all .4s ease;
+  margin-top:8px;
+  font-size:13px;
+  color:#555;
+  line-height:1.5;
+}
+
+/* ===== ANIMAÇÃO FADE-UP ===== */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: all 0.6s ease-out;
+}
+
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Sobre */
+.sobre-box{
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.sobre-box img{
+  width:260px;
+  border-radius:18px;
+}
+
+.sobre-texto{
+  flex:1;
+  color:#444;
+  line-height:1.8;
+}
+
+/* ===== LOCALIZAÇÃO ===== */
+.localizacao{
+   background:#ffffff;
+  padding:60px 20px;
+  border-radius:22px;
+  box-shadow:0 10px 40px rgba(0,0,0,.15);
+  margin-bottom:60px;
+}
+
+.localizacao h2{
+  color:#7a3b3b;
+}
+
+.localizacao-content{
+  display:flex;
+  gap:30px;
+  flex-wrap:wrap;
+  align-items:center;
+  justify-content:center;
+}
+
+.localizacao-content div{
+  flex:1;
+  min-width:280px;
+}
+
+.localizacao iframe{
+  width:100%;
+  height:300px;
+  border:0;
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+/* ===== BOTÕES FLUTUANTES ===== */
+.btn-float{
+  position:fixed;
+  right:18px;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:20px;
+  text-decoration:none;
+  box-shadow:0 6px 18px rgba(0,0,0,.3);
+}
+/* BOTÕES FLUTUANTES */
+.botoes-flutuantes{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  z-index:999;
+}
+
+.float-btn{
+  width:46px;
+  height:46px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:22px;
+  text-decoration:none;
+  box-shadow:0 6px 16px rgba(0,0,0,.25);
+  transition:.3s ease;
+}
+
+/* WhatsApp */
+.float-btn.wpp{
+  background:#25d366;
+}
+
+.float-btn.wpp:hover{
+  transform:scale(1.12);
+  box-shadow:0 10px 22px rgba(37,211,102,.45);
+}
+
+/* Instagram */
+.float-btn.insta{
+  background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af);
+}
+
+.float-btn.insta:hover{
+  transform:scale(1.12);
+  box-shadow:0 10px 22px rgba(221,42,123,.45);
+}
+
+
+.whatsapp{bottom:20px;background:#25d366;}
+.instagram{bottom:80px;background:#c13584;}
+
+/* ===== RESPONSIVO ===== */
+@media(max-width:768px){
+  .menu{display:none;flex-direction:column;gap:20px;background:white;position:absolute;top:60px;right:0;width:200px;padding:20px;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.25);}
+  .menu-toggle{display:flex;}
+  .cards{grid-template-columns:1fr;}
+  .sobre-box{flex-direction:column;text-align:center;}
+  .localizacao-content{flex-direction:column;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="faixa-logo">
+  <div class="tracejado"></div>
+  <img src="img/logo.jpeg" class="logo" alt="Logo">
+</div>
+
+<nav>
+  <div class="menu-toggle" id="menu-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="menu" id="menu">
+    <a href="#servicos">Serviços</a>
+    <a href="#thays">Quem é a Thays</a>
+    <a href="#quemsomos">Quem Somos</a>
+    <a href="#localizacao">Localização</a>
+     <a href="https://wa.me/5519989802810?text=Olá%20vim%20pelo%20site%20e%20gostaria%20de%20mais%20informações" target="_blank">
+  Fale Conosco
+</a>
+
+  </div>
+</nav>
+
+<section id="servicos">
+  <h2 class="fade-up">Serviços</h2>
+
+  <div class="cards">
+
+    <div class="card fade-up">
+      <img src="img/fisioterapia.jpeg.jpeg" alt="Fisioterapia">
+      <div class="card-content">
+        <h3>Fisioterapia</h3>
+        <button class="saiba-mais">Saiba mais <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="detalhes">
+          <p>A fisioterapia vai muito além do tratamento: ela ajuda você a recuperar movimentos, superar dores e voltar a viver suas atividades com confiança. Cada sessão é um passo para retomar sua autonomia, prevenir novas dificuldades e conquistar mais saúde e bem-estar no dia a dia.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <img src="img/liberação miofacial.jpeg" alt="Liberação Miofascial">
+      <div class="card-content">
+        <h3>Liberação Miofascial</h3>
+        <button class="saiba-mais">Saiba mais <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="detalhes">
+          <p>A liberação miofascial é uma técnica manual que atua nos tecidos moles do corpo, liberando tensões e aderências que limitam os movimentos e causam dor. Ao melhorar a circulação e a mobilidade, promove alívio imediato, restaura a função muscular e auxilia no equilíbrio postural.
+Indicada para quem sofre com dores crônicas, rigidez, sobrecargas musculares ou busca melhor performance física, a técnica é essencial tanto para a reabilitação quanto para a prevenção de lesões.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <img src="img/pilates.jpeg.jpeg" alt="Pilates">
+      <div class="card-content">
+        <h3>Pilates</h3>
+        <button class="saiba-mais">Saiba mais <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="detalhes">
+          <p>O Pilates é um método de exercícios que combina força, flexibilidade, respiração e consciência corporal. Na reabilitação, ele é um grande aliado, pois fortalece a musculatura profunda, melhora a postura, aumenta a mobilidade e acelera a recuperação após lesões.
+Além de auxiliar no tratamento, o Pilates atua na prevenção, proporcionando equilíbrio físico, alívio de dores e maior qualidade de movimento. É um recurso seguro, adaptável e indicado para todas as idades e níveis de condicionamento.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card fade-up">
+      <img src="img/treino funcuonal.jpeg" alt="Treino Funcional">
+      <div class="card-content">
+        <h3>Treino Funcional</h3>
+        <button class="saiba-mais">Saiba mais <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="detalhes">
+          <p>O treinamento funcional para reabilitação é um método de exercícios personalizados que utiliza movimentos naturais do corpo para recuperar força, equilíbrio e mobilidade após lesões ou cirurgias.
+Adaptado às limitações e objetivos de cada paciente, ele auxilia na correção postural, na prevenção de novas lesões e na retomada segura das atividades do dia a dia, tornando a reabilitação mais dinâmica e eficaz.
+</p>
+        </div>
+      </div>
+    </div>
+    <div class="card fade-up">
+      <img src="img/reablilitação de joelho.jpeg" alt="Reabilitação de Joelho">
+      <div class="card-content">
+        <h3>Reabilitação de Joelho</h3>
+        <button class="saiba-mais">Saiba mais <i class="fa-solid fa-chevron-down"></i></button>
+        <div class="detalhes">
+          <p>A fisioterapia no pré e pós-operatório de joelho é fundamental para garantir uma recuperação rápida, segura e completa. Antes da cirurgia, o trabalho fisioterapêutico prepara o corpo, fortalecendo músculos, melhorando a mobilidade e reduzindo riscos no procedimento. No pós-operatório, cada sessão é planejada para acelerar a cicatrização, controlar a dor, reduzir edemas e restabelecer a função articular.
+Nosso objetivo é acompanhar o paciente em todas as fases, oferecendo protocolos individualizados que promovem um retorno mais seguro às atividades diárias e esportivas.
+</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-- BOTÕES FLUTUANTES -->
+<div class="botoes-flutuantes">
+  <a href="https://wa.me/5519989802810" target="_blank" class="float-btn wpp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <a href="https://instagram.com/thaysnascimentofisio" target="_blank" class="float-btn insta">
+    <i class="fab fa-instagram"></i>
+  </a>
+</div>
+
+
+</section>
+<section id="thays">
+  <h2 class="fade-up">Quem é a Thays Nascimento</h2>
+
+  <div class="sobre-box fade-up">
+    <img src="img/thaysnasci.jpeg.jpeg" alt="Thays Nascimento">
+    <div class="sobre-texto">
+     
+À frente do projeto, sou Thays Cristina do Nascimento, fisioterapeuta formada em 2016 pela Metrocamp, com 10 anos de atuação na área da saúde e 7 anos à frente do nosso espaço. Ao longo dessa trajetória, venho unindo experiência, inovação e acolhimento para oferecer o melhor em reabilitação funcional, Pilates e programas de prevenção.
+
+Acredito que a fisioterapia vai muito além de tratar sintomas: ela é também sobre resgatar confiança, prevenir lesões, ampliar a performance e oferecer qualidade de vida. Por isso, o trabalho na Thays Nascimento Saúde Integrativa é construído de forma integrada, combinando ciência, prática clínica e cuidado humano.
+    </div>
+  </div>
+</section>
+<section id="quemsomos">
+  <h2 class="fade-up">Quem Somos</h2>
+
+  <div class="sobre-box fade-up">
+    <div class="sobre-texto">
+       Nós somos Thays Nascimento Saúde Integrativa, um espaço dedicado a transformar vidas através do movimento e do cuidado integral. Buscamos criar experiências transformadoras, onde cada paciente encontra suporte para superar desafios, recuperar a autonomia e descobrir novas formas de se fortalecer.
+
+Nosso propósito é consolidar uma referência em fisioterapia e bem-estar, unindo técnica, inovação e cuidado para que cada pessoa alcance sua melhor versão — no corpo, na saúde e na vida.
+    </div>
+    </div>
+  </div>
+</section>
+
+  </div>
+</section>
+<section id="localizacao" class="localizacao">
+  <h2 class="fade-up">Localização</h2>
+
+  <div class="localizacao-content">
+    <div class="fade-up">
+      <p style="font-size:16px;color:#555;line-height:1.7;">
+        Rua Dona Margarida de Campos, nº 77, Sala 2<br>
+        Hortolândia - SP
+      </p>
+    </div>
+
+    <div class="fade-up">
+      <iframe
+        src="https://www.google.com/maps?q=Rua+Dona+Margarida+de+Campos+77,Hortolândia&output=embed"
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+
+<script>
+// Menu mobile
+const toggle = document.getElementById('menu-toggle');
+const menu = document.getElementById('menu');
+toggle.addEventListener('click',()=>{
+  menu.classList.toggle('active');
+});
+
+// Botão saiba mais
+document.querySelectorAll('.saiba-mais').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const detalhes = btn.nextElementSibling;
+    const icon = btn.querySelector('i');
+    if(detalhes.style.maxHeight){
+      detalhes.style.maxHeight = null;
+      detalhes.style.opacity = 0;
+      icon.style.transform = "rotate(0deg)";
+      btn.innerHTML = 'Saiba mais <i class="fa-solid fa-chevron-down"></i>';
+    }else{
+      detalhes.style.maxHeight = detalhes.scrollHeight + "px";
+      detalhes.style.opacity = 1;
+      icon.style.transform = "rotate(180deg)";
+      btn.innerHTML = 'Fechar <i class="fa-solid fa-chevron-down"></i>';
+    }
+  });
+});
+
+// Fade-up animation
+const fadeElements = document.querySelectorAll('.fade-up');
+fadeElements.forEach((el,i)=>{
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        setTimeout(()=>{entry.target.classList.add('show');}, i*150);
+      }
+    });
+  }, { threshold:0.2 });
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
